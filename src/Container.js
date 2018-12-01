@@ -17,8 +17,12 @@ export default class Container extends PureComponent {
     };
   }
 
+  static propTypes = {
+    getScrollContainer: PropTypes.func.isRequired
+  };
+
   static defaultProps = {
-    scrollContainer: window
+    getScrollContainer: () => window
   };
 
   events = [
@@ -65,12 +69,21 @@ export default class Container extends PureComponent {
   getParent = () => this.node;
 
   nodeListenedTo = null;
+  init() {
+    this.nodeListenedTo = this.props.getScrollContainer();
+    if (this.nodeListenedTo) {
+      this.nodeListenedTo.addEventListener("scroll", this.notifySubscribers);
+      this.events.forEach(event =>
+        window.addEventListener(event, this.notifySubscribers)
+      );
+    }
+  }
+
+  timeoutHandle = null
   componentDidMount() {
-    this.nodeListenedTo = this.props.scrollContainer;
-    this.nodeListenedTo.addEventListener('scroll', this.notifySubscribers)
-    this.events.forEach(event =>
-      window.addEventListener(event, this.notifySubscribers)
-    );
+    // WORKAROUND: scroll container is a parent component, it hasn't set its ref correctly yet
+    // set a timeout to ensure getScrollContainer works
+    this.timeoutHandle = setTimeout(() => this.init());
   }
 
   componentWillUnmount() {
@@ -78,14 +91,17 @@ export default class Container extends PureComponent {
       raf.cancel(this.rafHandle);
       this.rafHandle = null;
     }
-    this.nodeListenedTo.removeEventListener('scroll', this.notifySubscribers)
-    this.events.forEach(event =>
-      window.removeEventListener(event, this.notifySubscribers)
-    );
+    if (this.nodeListenedTo) {
+      this.nodeListenedTo.removeEventListener("scroll", this.notifySubscribers);
+      this.events.forEach(event =>
+        window.removeEventListener(event, this.notifySubscribers)
+      );
+    }
+    clearTimeout(this.timeoutHandle)
   }
 
   render() {
-    const { scrollContainer, ...restProps } = this.props;
+    const { getScrollContainer, ...restProps } = this.props;
 
     return (
       <div
