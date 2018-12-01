@@ -1,6 +1,6 @@
 {
   "name": "@bobgy/react-sticky",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "description": "Sticky component for React",
   "main": "lib/index.js",
   "scripts": {
