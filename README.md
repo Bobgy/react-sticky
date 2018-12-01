@@ -1,21 +1,25 @@
 # react-sticky [![Build Status](https://travis-ci.org/captivationsoftware/react-sticky.svg?branch=master)](https://travis-ci.org/captivationsoftware/react-sticky)
 
+## NOTE: This is a forked version of react-sticky that supports using a dom node other than window.document.body as scrolling container
+
 Make your React components sticky!
 
 #### Demos
 
-* [Basic](http://react-sticky.netlify.com/#/basic)
-* [Relative](http://react-sticky.netlify.com/#/relative)
-* [Stacked](http://react-sticky.netlify.com/#/stacked)
+- [Basic](http://react-sticky.netlify.com/#/basic)
+- [Relative](http://react-sticky.netlify.com/#/relative)
+- [Stacked](http://react-sticky.netlify.com/#/stacked)
 
 #### Version 6.x Highlights
 
-* Completely redesigned to support sticky behavior via higher-order component, giving you ultimate control of implementation details
-* Features a minimal yet efficient API
-* Drops support for versions of React < 15.3. If you are using an earlier version of React, continue to use the 5.x series
+- Completely redesigned to support sticky behavior via higher-order component, giving you ultimate control of implementation details
+- Features a minimal yet efficient API
+- Drops support for versions of React < 15.3. If you are using an earlier version of React, continue to use the 5.x series
 
 #### CSS
+
 There's a CSS alternative to `react-sticky`: the `position: sticky` feature. However it currently does not have [full browser support](https://caniuse.com/#feat=css-sticky), specifically a lack of IE11 support and some bugs with table elements. Before using `react-sticky`, check to see if the browser support and restrictions prevent you from using `position: sticky`, as CSS will always be faster and more durable than a JS implementation.
+
 ```css
 position: -webkit-sticky;
 position: sticky;
@@ -42,12 +46,12 @@ The goal of `react-sticky` is make it easier for developers to build UIs that ha
 
 The majority of use cases will only need the style to pass to the DOM, but some other properties are passed for advanced use cases:
 
-* `style` _(object)_ - modifiable style attributes to optionally be passed to the element returned by this function. For many uses, this will be the only attribute needed.
-* `isSticky` _(boolean)_ - is the element sticky as a result of the current event?
-* `wasSticky` _(boolean)_ - was the element sticky prior to the current event?
-* `distanceFromTop` _(number)_ - number of pixels from the top of the `Sticky` to the nearest `StickyContainer`'s top
-* `distanceFromBottom` _(number)_ - number of pixels from the bottom of the `Sticky` to the nearest `StickyContainer`'s bottom
-* `calculatedHeight` _(number)_ - height of the element returned by this function
+- `style` _(object)_ - modifiable style attributes to optionally be passed to the element returned by this function. For many uses, this will be the only attribute needed.
+- `isSticky` _(boolean)_ - is the element sticky as a result of the current event?
+- `wasSticky` _(boolean)_ - was the element sticky prior to the current event?
+- `distanceFromTop` _(number)_ - number of pixels from the top of the `Sticky` to the nearest `StickyContainer`'s top
+- `distanceFromBottom` _(number)_ - number of pixels from the bottom of the `Sticky` to the nearest `StickyContainer`'s bottom
+- `calculatedHeight` _(number)_ - height of the element returned by this function
 
 The `Sticky`'s child function will be called when events occur in the parent `StickyContainer`,
 and will serve as the callback to apply your own logic and customizations, with sane `style` attributes
