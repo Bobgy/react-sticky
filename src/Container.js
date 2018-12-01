@@ -17,9 +17,12 @@ export default class Container extends PureComponent {
     };
   }
 
+  static defaultProps = {
+    scrollContainer: window
+  };
+
   events = [
     "resize",
-    "scroll",
     "touchstart",
     "touchmove",
     "touchend",
@@ -61,7 +64,10 @@ export default class Container extends PureComponent {
 
   getParent = () => this.node;
 
+  nodeListenedTo = null;
   componentDidMount() {
+    this.nodeListenedTo = this.props.scrollContainer;
+    this.nodeListenedTo.addEventListener('scroll', this.notifySubscribers)
     this.events.forEach(event =>
       window.addEventListener(event, this.notifySubscribers)
     );
@@ -72,16 +78,18 @@ export default class Container extends PureComponent {
       raf.cancel(this.rafHandle);
       this.rafHandle = null;
     }
-
+    this.nodeListenedTo.removeEventListener('scroll', this.notifySubscribers)
     this.events.forEach(event =>
       window.removeEventListener(event, this.notifySubscribers)
     );
   }
 
   render() {
+    const { scrollContainer, ...restProps } = this.props;
+
     return (
       <div
-        {...this.props}
+        {...restProps}
         ref={node => (this.node = node)}
         onScroll={this.notifySubscribers}
         onTouchStart={this.notifySubscribers}
